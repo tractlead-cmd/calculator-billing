@@ -7,51 +7,62 @@
     body {
       font-family: Arial;
       background: #f4f4f4;
-      padding: 20px;
+      padding: 8px;
     }
 
     h2 {
       text-align: center;
+      margin: 8px 0;
     }
 
     .box {
       background: white;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 10px;
-      max-width: 420px;
-      margin-left: auto;
-      margin-right: auto;
+      padding: 8px;
+      border-radius: 6px;
+      max-width: 450px;
+      margin: 5px auto;   /* very small gap */
     }
 
-    input, button {
-      padding: 12px;
-      margin-top: 10px;
+    input {
+      padding: 10px;
       width: 100%;
       font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      margin-top: 5px;
       box-sizing: border-box;
     }
 
     button {
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+      margin-top: 5px;
       background: green;
       color: white;
       border: none;
       cursor: pointer;
-      font-weight: bold;
     }
 
-    button:hover {
-      background: darkgreen;
+    /* INLINE HEADER ROW */
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .title {
+      font-weight: bold;
+      font-size: 14px;
+      white-space: nowrap;
     }
 
     .result {
-      margin-top: 10px;
       font-weight: bold;
       color: blue;
-      font-size: 16px;
+      font-size: 14px;
+      white-space: nowrap;
     }
+
   </style>
 </head>
 
@@ -59,26 +70,32 @@
 
 <h2>🛒 Grocery Calculator</h2>
 
-<!-- PRICE -->
+<!-- 1 KG PRICE -->
 <div class="box">
-  <h3>1️⃣ Enter 1 KG Price</h3>
-  <input id="kgPrice" type="number" placeholder="e.g. 120" />
+  <div class="title">1️⃣ 1 KG Price</div>
+  <input id="kgPrice" type="number" placeholder="Enter price per kg" />
 </div>
 
-<!-- MONEY TO WEIGHT -->
+<!-- ₹ TO GRAMS -->
 <div class="box">
-  <h3>2️⃣ ₹ → Grams</h3>
-  <input id="money" type="number" placeholder="Enter amount (₹)" />
+  <div class="row">
+    <div class="title">2️⃣ ₹ → Grams</div>
+    <div class="result" id="mwResult"></div>
+  </div>
+
+  <input id="money" type="number" placeholder="Enter ₹ amount" />
   <button onclick="moneyToWeight()">Calculate</button>
-  <div class="result" id="mwResult"></div>
 </div>
 
-<!-- WEIGHT TO MONEY -->
+<!-- GRAMS TO ₹ -->
 <div class="box">
-  <h3>3️⃣ Grams → ₹</h3>
-  <input id="grams" type="number" placeholder="Enter grams (e.g. 250)" />
+  <div class="row">
+    <div class="title">3️⃣ Grams → ₹</div>
+    <div class="result" id="wmResult"></div>
+  </div>
+
+  <input id="grams" type="number" placeholder="Enter grams" />
   <button onclick="weightToMoney()">Calculate</button>
-  <div class="result" id="wmResult"></div>
 </div>
 
 <script>
@@ -87,31 +104,25 @@ function getKgPrice() {
   return parseFloat(document.getElementById("kgPrice").value);
 }
 
-// ₹ → grams
+/* ₹ → grams */
 function moneyToWeight() {
   let price = getKgPrice();
   let money = parseFloat(document.getElementById("money").value);
 
-  if (!price || !money) {
-    document.getElementById("mwResult").innerText = "Please enter valid values";
-    return;
-  }
+  if (!price || !money) return;
 
   let grams = (money / price) * 1000;
 
   document.getElementById("mwResult").innerText =
-    money + " ₹ = " + grams.toFixed(2) + " grams";
+    money + " ₹ = " + grams.toFixed(2) + " g";
 }
 
-// grams → ₹
+/* grams → ₹ */
 function weightToMoney() {
   let price = getKgPrice();
   let grams = parseFloat(document.getElementById("grams").value);
 
-  if (!price || !grams) {
-    document.getElementById("wmResult").innerText = "Please enter valid values";
-    return;
-  }
+  if (!price || !grams) return;
 
   let cost = (grams / 1000) * price;
 
@@ -119,27 +130,17 @@ function weightToMoney() {
     grams + " g = ₹ " + cost.toFixed(2);
 }
 
-/* ---------------- ENTER KEY FLOW ---------------- */
-
-// 1kg price → move to money
-document.getElementById("kgPrice").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") {
-    document.getElementById("money").focus();
-  }
+/* ENTER KEY FLOW */
+document.getElementById("kgPrice").addEventListener("keydown", e => {
+  if (e.key === "Enter") document.getElementById("money").focus();
 });
 
-// money → auto calculate
-document.getElementById("money").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") {
-    moneyToWeight();
-  }
+document.getElementById("money").addEventListener("keydown", e => {
+  if (e.key === "Enter") moneyToWeight();
 });
 
-// grams → auto calculate
-document.getElementById("grams").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") {
-    weightToMoney();
-  }
+document.getElementById("grams").addEventListener("keydown", e => {
+  if (e.key === "Enter") weightToMoney();
 });
 
 </script>

@@ -1,75 +1,247 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Grocery Calculator</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <style>
-    body {
-      font-family: Arial;
-      background: #f4f4f4;
-      padding: 10px;
-    }
+<title>Grocery Calculator</title>
 
-    h2 {
-      text-align: center;
-      margin: 10px 0;
-      font-size: 28px;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    .row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: white;
-      padding: 14px;
-      border-radius: 10px;
-      max-width: 700px;
-      margin: 8px auto;
-    }
+<style>
 
-    .label {
-      font-weight: bold;
-      white-space: nowrap;
-      font-size: 20px;   /* 🔥 increased */
-    }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    input {
-      padding: 12px;
-      font-size: 20px;   /* 🔥 increased */
-      width: 160px;
-    }
+body{
+  font-family:'Poppins',sans-serif;
+  min-height:100vh;
 
-    .result {
-      font-weight: bold;
-      color: blue;
-      white-space: nowrap;
-      font-size: 22px;   /* 🔥 increased */
-    }
-  </style>
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  background:
+    radial-gradient(circle at top left,#7f5af0,#2cb67d),
+    radial-gradient(circle at bottom right,#ff8906,#e53170);
+
+  overflow:hidden;
+  padding:20px;
+}
+
+/* floating blurred blobs */
+body::before,
+body::after{
+  content:"";
+  position:absolute;
+  width:350px;
+  height:350px;
+  border-radius:50%;
+  filter:blur(90px);
+  opacity:.45;
+  z-index:0;
+}
+
+body::before{
+  background:#00c6ff;
+  top:-100px;
+  left:-100px;
+}
+
+body::after{
+  background:#ff00c8;
+  bottom:-100px;
+  right:-100px;
+}
+
+/* MAIN CONTAINER */
+
+.container{
+  position:relative;
+  z-index:1;
+
+  width:100%;
+  max-width:750px;
+
+  backdrop-filter:blur(20px);
+  background:rgba(255,255,255,0.12);
+
+  border:1px solid rgba(255,255,255,0.18);
+
+  border-radius:28px;
+
+  padding:35px;
+
+  box-shadow:
+    0 8px 32px rgba(0,0,0,.25);
+
+  animation:fadeIn .7s ease;
+}
+
+@keyframes fadeIn{
+  from{
+    opacity:0;
+    transform:translateY(20px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* TITLE */
+
+h2{
+  text-align:center;
+  font-size:38px;
+  color:white;
+  margin-bottom:30px;
+  letter-spacing:1px;
+}
+
+/* CARD ROW */
+
+.row{
+  background:rgba(255,255,255,0.12);
+
+  border:1px solid rgba(255,255,255,0.18);
+
+  border-radius:22px;
+
+  padding:22px;
+
+  margin-bottom:18px;
+
+  display:flex;
+  align-items:center;
+  gap:18px;
+
+  transition:.35s ease;
+}
+
+.row:hover{
+  transform:translateY(-4px) scale(1.01);
+
+  background:rgba(255,255,255,0.18);
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,.18);
+}
+
+/* LABEL */
+
+.label{
+  min-width:180px;
+
+  color:white;
+  font-size:21px;
+  font-weight:600;
+}
+
+/* INPUT */
+
+input{
+  flex:1;
+
+  padding:16px 18px;
+
+  border:none;
+  outline:none;
+
+  border-radius:16px;
+
+  background:rgba(255,255,255,.18);
+
+  color:white;
+
+  font-size:20px;
+
+  transition:.25s;
+}
+
+input::placeholder{
+  color:rgba(255,255,255,.7);
+}
+
+input:focus{
+  background:rgba(255,255,255,.26);
+
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,.15),
+    0 0 18px rgba(255,255,255,.2);
+}
+
+/* RESULT */
+
+.result{
+  min-width:140px;
+
+  text-align:right;
+
+  color:#fff;
+
+  font-size:24px;
+  font-weight:700;
+
+  text-shadow:
+    0 0 10px rgba(255,255,255,.45);
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+  .row{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .label{
+    min-width:auto;
+  }
+
+  .result{
+    text-align:left;
+  }
+
+  h2{
+    font-size:30px;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
-<h2>🛒 Grocery Calculator</h2>
+<div class="container">
 
-<!-- 1 KG PRICE -->
-<div class="row">
-  <div class="label">1️⃣ KG Price</div>
-  <input id="kgPrice" type="number" placeholder="₹/kg" />
-</div>
+  <h2>🛒 Grocery Calculator</h2>
 
-<!-- ₹ TO GRAMS -->
-<div class="row">
-  <div class="label">2️⃣ ₹ → Grams</div>
-  <input id="money" type="number" placeholder="₹ amount" />
-  <div class="result" id="mwResult"></div>
-</div>
+  <!-- 1 KG PRICE -->
+  <div class="row">
+    <div class="label">1️⃣ KG Price</div>
+    <input id="kgPrice" type="number" placeholder="₹ per kg">
+  </div>
 
-<!-- GRAMS TO ₹ -->
-<div class="row">
-  <div class="label">3️⃣ Grams → ₹</div>
-  <input id="grams" type="number" placeholder="grams" />
-  <div class="result" id="wmResult"></div>
+  <!-- ₹ TO GRAMS -->
+  <div class="row">
+    <div class="label">2️⃣ ₹ → Grams</div>
+    <input id="money" type="number" placeholder="Enter ₹ amount">
+    <div class="result" id="mwResult"></div>
+  </div>
+
+  <!-- GRAMS TO ₹ -->
+  <div class="row">
+    <div class="label">3️⃣ Grams → ₹</div>
+    <input id="grams" type="number" placeholder="Enter grams">
+    <div class="result" id="wmResult"></div>
+  </div>
+
 </div>
 
 <script>
@@ -80,10 +252,14 @@ function getKgPrice() {
 
 /* ₹ → grams */
 document.getElementById("money").addEventListener("input", function () {
+
   let price = getKgPrice();
   let money = parseFloat(this.value);
 
-  if (!price || !money) return;
+  if (!price || !money) {
+    document.getElementById("mwResult").innerText = "";
+    return;
+  }
 
   let grams = (money / price) * 1000;
 
@@ -93,10 +269,14 @@ document.getElementById("money").addEventListener("input", function () {
 
 /* grams → ₹ */
 document.getElementById("grams").addEventListener("input", function () {
+
   let price = getKgPrice();
   let grams = parseFloat(this.value);
 
-  if (!price || !grams) return;
+  if (!price || !grams) {
+    document.getElementById("wmResult").innerText = "";
+    return;
+  }
 
   let cost = (grams / 1000) * price;
 
@@ -105,12 +285,15 @@ document.getElementById("grams").addEventListener("input", function () {
 });
 
 /* ENTER FLOW */
+
 document.getElementById("kgPrice").addEventListener("keydown", e => {
-  if (e.key === "Enter") document.getElementById("money").focus();
+  if (e.key === "Enter")
+    document.getElementById("money").focus();
 });
 
 document.getElementById("money").addEventListener("keydown", e => {
-  if (e.key === "Enter") document.getElementById("grams").focus();
+  if (e.key === "Enter")
+    document.getElementById("grams").focus();
 });
 
 </script>

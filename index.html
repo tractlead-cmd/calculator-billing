@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Grocery Calculator</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    .box {
+      background: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      max-width: 400px;
+    }
+    input, button {
+      padding: 10px;
+      margin-top: 8px;
+      width: 100%;
+      font-size: 16px;
+    }
+    button {
+      background: green;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 10px;
+      font-weight: bold;
+      color: blue;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🛒 Grocery Calculator</h2>
+
+<!-- PRICE INPUT -->
+<div class="box">
+  <h3>Step 1: Enter 1 KG Price</h3>
+  <input id="kgPrice" type="number" placeholder="e.g. 120" />
+</div>
+
+<!-- MONEY TO WEIGHT -->
+<div class="box">
+  <h3>₹ → Grams (Money to Weight)</h3>
+  <input id="money" type="number" placeholder="Enter amount (₹)" />
+  <button onclick="moneyToWeight()">Calculate</button>
+  <div class="result" id="mwResult"></div>
+</div>
+
+<!-- WEIGHT TO MONEY -->
+<div class="box">
+  <h3>Grams → ₹ (Weight to Money)</h3>
+  <input id="grams" type="number" placeholder="Enter grams (e.g. 250)" />
+  <button onclick="weightToMoney()">Calculate</button>
+  <div class="result" id="wmResult"></div>
+</div>
+
+<script>
+function getKgPrice() {
+  return parseFloat(document.getElementById("kgPrice").value);
+}
+
+// ₹ to grams
+function moneyToWeight() {
+  let price = getKgPrice();
+  let money = parseFloat(document.getElementById("money").value);
+
+  if (!price || !money) {
+    document.getElementById("mwResult").innerText = "Enter valid inputs";
+    return;
+  }
+
+  let grams = (money / price) * 1000;
+  document.getElementById("mwResult").innerText =
+    money + " ₹ = " + grams.toFixed(2) + " grams";
+}
+
+// grams to ₹
+function weightToMoney() {
+  let price = getKgPrice();
+  let grams = parseFloat(document.getElementById("grams").value);
+
+  if (!price || !grams) {
+    document.getElementById("wmResult").innerText = "Enter valid inputs";
+    return;
+  }
+
+  let cost = (grams / 1000) * price;
+  document.getElementById("wmResult").innerText =
+    grams + " g = ₹ " + cost.toFixed(2);
+}
+</script>
+
+</body>
+</html>
